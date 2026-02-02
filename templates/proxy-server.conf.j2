@@ -103,6 +103,20 @@ operator_roles = admin, {{ swift_operator_role }}
 reseller_admin_role = {{ swift_reselleradmin_role }}
 {% endif %}
 
+{% if swift_keystone_audit_middlware_enabled %}
+[filter:audit]
+paste.filter_factory = keystonemiddleware.audit:filter_factory
+driver = {{ swift_keystone_audit_middlware_driver }}
+audit_map_file = /etc/barbican/api_audit_map.conf
+{% if "messaging" in swift_keystone_audit_middlware_driver %}
+transport_url = {{ swift_oslomsg_notify_transport }}://{% for host in swift_oslomsg_notify_servers.split(',') %}{{ swift_oslomsg_notify_userid }}:{{ swift_oslomsg_notify_password }}@{{ host }}:{{ swift_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ swift_oslomsg_notify_vhost }}{% if swift_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ swift_oslomsg_notify_ssl_version }}&ssl_ca_file={{ swift_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+{% endif %}
+# We only audit changes (CUD) and leave out reads
+ignore_req_list = {{ swift_keystone_audit_middlware_ignore_list }}
+{% endif %}
+
+{% endif %}
+
 [filter:healthcheck]
 use = egg:swift#healthcheck
 

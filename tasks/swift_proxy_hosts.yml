@@ -37,3 +37,11 @@
   when: >
     swift_container_sync_realms is defined
   notify: Restart swift services
+
+- name: Create swift api audit map file
+  template:
+    src: api_audit_map.conf.j2
+    dest: /etc/swift/api_audit_map.conf
+  notify: Restart swift services
+  when:
+    - swift_keystone_audit_middlware_enabled | bool

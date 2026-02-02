@@ -152,6 +152,10 @@ swift_max_file_limits: "{{ swift_hard_open_file_limits * 24 }}"
 swift_keystone_auth_plugin: "{{ swift_keystone_auth_type }}"
 swift_keystone_auth_type: "password"
 
+swift_keystone_audit_middlware_enabled: false
+swift_keystone_audit_middlware_ignore_list: ""
+swift_keystone_audit_middlware_driver: log
+
 swift_dispersion_user: dispersion
 swift_dispersion_user_domain_name: "Default"
 
