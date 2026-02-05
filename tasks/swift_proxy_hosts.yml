@@ -40,8 +40,11 @@
 
 - name: Create swift api audit map file
   template:
-    src: api_audit_map.conf.j2
-    dest: /etc/swift/api_audit_map.conf
+    src: "api_audit_map.conf.j2"
+    dest: "/etc/swift/api_audit_map.conf"
+    owner: "{{ swift_system_user_name }}"
+    group: "{{ swift_system_group_name }}"
+    mode: "0644"
   notify: Restart swift services
   when:
     - swift_keystone_audit_middlware_enabled | bool
