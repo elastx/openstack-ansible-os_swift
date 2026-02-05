@@ -115,8 +115,6 @@ transport_url = {{ swift_oslomsg_notify_transport }}://{% for host in swift_oslo
 ignore_req_list = {{ swift_keystone_audit_middlware_ignore_list }}
 {% endif %}
 
-{% endif %}
-
 [filter:healthcheck]
 use = egg:swift#healthcheck
 
